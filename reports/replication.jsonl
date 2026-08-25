@@ -1,5 +1,9 @@
-{"snapshot_at": 1787683083.2569804, "source_region": "a", "latest_doc_ts": 1787683083.222435, "embed_model_version": "embed-model=vi-e5-base@v3", "every_s": 30.0}
-{"snapshot_at": 1787683113.2571137, "source_region": "a", "latest_doc_ts": 1787683113.2276385, "embed_model_version": "embed-model=vi-e5-base@v3", "every_s": 30.0}
-{"snapshot_at": 1787683143.2572906, "source_region": "a", "latest_doc_ts": 1787683143.2324336, "embed_model_version": "embed-model=vi-e5-base@v3", "every_s": 30.0}
-{"snapshot_at": 1787683173.2574475, "source_region": "a", "latest_doc_ts": 1787683173.238657, "embed_model_version": "embed-model=vi-e5-base@v3", "every_s": 30.0}
-{"snapshot_at": 1787683203.2576041, "source_region": "a", "latest_doc_ts": 1787683203.2427077, "embed_model_version": "embed-model=vi-e5-base@v3", "every_s": 30.0}
+{"snapshot_at": 1787686292.907281, "source_region": "a", "latest_doc_ts": 1787686292.8726304, "embed_model_version": "embed-model=vi-e5-base@v3", "every_s": 30.0}
+{"snapshot_at": 1787686322.907505, "source_region": "a", "latest_doc_ts": 1787686322.8773255, "embed_model_version": "embed-model=vi-e5-base@v3", "every_s": 30.0}
+{"snapshot_at": 1787686352.9076188, "source_region": "a", "latest_doc_ts": 1787686352.8806674, "embed_model_version": "embed-model=vi-e5-base@v3", "every_s": 30.0}
+{"snapshot_at": 1787686382.9077606, "source_region": "a", "latest_doc_ts": 1787686382.8840296, "embed_model_version": "embed-model=vi-e5-base@v3", "every_s": 30.0}
+{"snapshot_at": 1787686412.9080822, "source_region": "a", "latest_doc_ts": 1787686412.8884068, "embed_model_version": "embed-model=vi-e5-base@v3", "every_s": 30.0}
+{"snapshot_at": 1787686442.9082925, "source_region": "a", "latest_doc_ts": 1787686442.8941371, "embed_model_version": "embed-model=vi-e5-base@v3", "every_s": 30.0}
+{"snapshot_at": 1787686472.9085648, "source_region": "a", "latest_doc_ts": 1787686472.8988035, "embed_model_version": "embed-model=vi-e5-base@v3", "every_s": 30.0}
+{"snapshot_at": 1787686502.9087586, "source_region": "a", "latest_doc_ts": 1787686500.9035864, "embed_model_version": "embed-model=vi-e5-base@v3", "every_s": 30.0}
+{"snapshot_at": 1787686532.9088564, "source_region": "a", "latest_doc_ts": 1787686530.907146, "embed_model_version": "embed-model=vi-e5-base@v3", "every_s": 30.0}

@@ -1,5 +1,15 @@
-{"ts": 1787682850.697968, "iso": "2026-08-25T18:34:10.697968Z", "step": "1_verify_target", "region": "b", "target_state": {"error": "mocked: target khong bao gio ready"}}
-{"ts": 1787682850.739054, "iso": "2026-08-25T18:34:10.739054Z", "step": "2_restore_snapshot", "region": "b", "embed_model_version": "test", "rpo_seconds": null, "docs_lost": null}
-{"ts": 1787682850.746819, "iso": "2026-08-25T18:34:10.746819Z", "step": "3_scale_pool", "region": "b", "pool_state": "full"}
-{"ts": 1787682851.755619, "iso": "2026-08-25T18:34:11.755619Z", "step": "4_wait_ready", "region": "b", "ready": false}
-{"ts": 1787682851.762359, "iso": "2026-08-25T18:34:11.762359Z", "step": "abort", "region": "b", "reason": "4_wait_ready timed out \u2014 KH\u00d4NG cutover \u0111\u1ec3 tr\u00e1nh double outage"}
+{"ts": 1787686373.287054, "iso": "2026-08-25T19:32:53.287054Z", "step": "1_verify_target", "region": "b", "target_state": {"region": "b", "pool_state": "warm", "weights": false, "count": 0, "latest_doc_ts": null, "ts": 1787686373.2860096}}
+{"ts": 1787686373.437006, "iso": "2026-08-25T19:32:53.437006Z", "step": "2_restore_snapshot", "region": "b", "embed_model_version": "embed-model=vi-e5-base@v3", "rpo_seconds": 20.0, "docs_lost": 10}
+{"ts": 1787686373.446021, "iso": "2026-08-25T19:32:53.446021Z", "step": "3_scale_pool", "region": "b", "pool_state": "full"}
+{"ts": 1787686379.851748, "iso": "2026-08-25T19:32:59.851748Z", "step": "4_wait_ready", "region": "b", "ready": true}
+{"ts": 1787686379.863423, "iso": "2026-08-25T19:32:59.863423Z", "step": "5_dns_cutover", "region": "b", "active_region": "b"}
+{"ts": 1787686860.577015, "iso": "2026-08-25T19:41:00.577015Z", "step": "1_verify_target", "region": "b", "target_state": {"error": "mocked: target khong bao gio ready"}}
+{"ts": 1787686860.63617, "iso": "2026-08-25T19:41:00.636170Z", "step": "2_restore_snapshot", "region": "b", "embed_model_version": "test", "rpo_seconds": 188.03, "docs_lost": 94}
+{"ts": 1787686860.64423, "iso": "2026-08-25T19:41:00.644230Z", "step": "3_scale_pool", "region": "b", "pool_state": "full"}
+{"ts": 1787686861.656218, "iso": "2026-08-25T19:41:01.656218Z", "step": "4_wait_ready", "region": "b", "ready": false}
+{"ts": 1787686861.661886, "iso": "2026-08-25T19:41:01.661886Z", "step": "abort", "region": "b", "reason": "4_wait_ready timed out \u2014 KH\u00d4NG cutover \u0111\u1ec3 tr\u00e1nh double outage"}
+{"ts": 1787686866.221447, "iso": "2026-08-25T19:41:06.221447Z", "step": "1_verify_target", "region": "b", "target_state": {"error": "mocked: target khong bao gio ready"}}
+{"ts": 1787686866.27012, "iso": "2026-08-25T19:41:06.270120Z", "step": "2_restore_snapshot", "region": "b", "embed_model_version": "test", "rpo_seconds": 188.03, "docs_lost": 94}
+{"ts": 1787686866.282022, "iso": "2026-08-25T19:41:06.282022Z", "step": "3_scale_pool", "region": "b", "pool_state": "full"}
+{"ts": 1787686867.289304, "iso": "2026-08-25T19:41:07.289304Z", "step": "4_wait_ready", "region": "b", "ready": false}
+{"ts": 1787686867.29542, "iso": "2026-08-25T19:41:07.295420Z", "step": "abort", "region": "b", "reason": "4_wait_ready timed out \u2014 KH\u00d4NG cutover \u0111\u1ec3 tr\u00e1nh double outage"}

@@ -1,2 +1,8 @@
-{"ts": 1787683132.302867, "iso": "2026-08-25T18:38:52.302867Z", "step": "1_xac_nhan_outage", "primary": "a", "primary_fail_count": 0, "primary_fail_threshold": 3, "primary_down": false, "target": "b", "target_ok": false, "target_reason": "Status 503"}
-{"ts": 1787683132.30714, "iso": "2026-08-25T18:38:52.307140Z", "step": "1_xac_nhan_outage_abort", "reason": "Region a ch\u1ec9 fail 0/3 l\u1ea7n \u2014 kh\u00f4ng ph\u1ea3i outage th\u1eadt"}
+{"ts": 1787686373.209873, "iso": "2026-08-25T19:32:53.209873Z", "step": "1_xac_nhan_outage", "primary": "a", "primary_fail_count": 3, "primary_fail_threshold": 3, "primary_down": true, "target": "b", "target_ok": false, "target_reason": "Status 503"}
+{"ts": 1787686373.214474, "iso": "2026-08-25T19:32:53.214474Z", "step": "2_thong_bao_incident", "message": "INCIDENT: Region a DOWN, b\u1eaft \u0111\u1ea7u failover sang b", "t_detection": 1787686373.2144663, "t_start_runbook": 1787686364.789448}
+{"ts": 1787686373.22549, "iso": "2026-08-25T19:32:53.225490Z", "step": "3_scale_gpu_pool_start", "primary": "a", "target": "b", "backend": "fs"}
+{"ts": 1787686379.873706, "iso": "2026-08-25T19:32:59.873706Z", "step": "3_scale_gpu_pool_done", "failover_ok": true, "active_region": "b", "rpo_seconds": 20.0, "docs_lost": 10}
+{"ts": 1787686379.877229, "iso": "2026-08-25T19:32:59.877229Z", "step": "4_verify_state_replica", "region": "b", "embed_model_version": "embed-model=vi-e5-base@v3", "rpo_seconds": 20.0, "docs_lost": 10}
+{"ts": 1787686379.889529, "iso": "2026-08-25T19:32:59.889529Z", "step": "5_dns_cutover", "active_region": "b", "cutover_ok": true}
+{"ts": 1787686384.885294, "iso": "2026-08-25T19:33:04.885294Z", "step": "6_verify_golden_signals", "requests": 10, "errors": 1, "error_rate": 0.1, "p95_latency_s": 2.073}
+{"ts": 1787686384.890141, "iso": "2026-08-25T19:33:04.890141Z", "step": "7_post_incident", "elapsed_s": 20.1, "measure_rto_cmd": "python3 tools/measure_rto.py --loadgen reports/drill-2-withdr.jsonl --target-rto 300", "active_region": "b", "rpo_seconds": 20.0, "docs_lost": 10}
