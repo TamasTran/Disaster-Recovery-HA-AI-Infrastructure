@@ -29,13 +29,72 @@ URL = {"a": "http://127.0.0.1:8001", "b": "http://127.0.0.1:8002"}
 
 
 def probe(region: str, timeout: float) -> tuple[bool, str]:
-    """TODO: trả về (ready, reason). Timeout PHẢI có — netblock làm request treo mãi."""
-    raise NotImplementedError
+    """Trả về (ready, reason). Timeout PHẢI có — netblock làm request treo mãi."""
+    try:
+        resp = httpx.get(
+            f"{URL[region]}/readyz",
+            timeout=timeout,
+        )
+        if resp.status_code == 200:
+            return True, "OK"
+        else:
+            return False, f"Status {resp.status_code}"
+    except Exception as e:
+        return False, str(e)
 
 
 def run(interval: float, timeout: float, threshold: int, duration: float, out: pathlib.Path):
-    """TODO: vòng lặp poll + phát hiện transition + ghi JSONL."""
-    raise NotImplementedError
+    """Vòng lặp poll + phát hiện transition + ghi JSONL."""
+    state = {"a": "HEALTHY", "b": "HEALTHY"}
+    # consecutive_failures chỉ đếm khi ĐANG HEALTHY → detect ngưỡng UNHEALTHY
+    consecutive_failures = {"a": 0, "b": 0}
+
+    start_time = time.time()
+    out.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(out, "w") as f:
+
+        def emit_state_change(region, to, reason, consec=0):
+            row = {
+                "ts": time.time(),
+                "event": "state_change",
+                "region": region,
+                "to": to,
+                "reason": reason,
+                "interval_s": interval,
+                "threshold": threshold,
+                "consecutive_fails": consec,
+            }
+            f.write(json.dumps(row) + "\n")
+            f.flush()
+
+        while time.time() - start_time < duration:
+            for region in ["a", "b"]:
+                ready, reason = probe(region, timeout)
+
+                if state[region] == "HEALTHY":
+                    if not ready:
+                        # Tích lũy consecutive failures
+                        consecutive_failures[region] += 1
+                        if consecutive_failures[region] >= threshold:
+                            # Đủ threshold → flip sang UNHEALTHY
+                            consec = consecutive_failures[region]
+                            state[region] = "UNHEALTHY"
+                            consecutive_failures[region] = 0
+                            emit_state_change(region, "UNHEALTHY", reason, consec=consec)
+                    else:
+                        # Healthy → reset counter
+                        consecutive_failures[region] = 0
+
+                else:  # state == "UNHEALTHY"
+                    if ready:
+                        # Đã recover → flip sang HEALTHY
+                        state[region] = "HEALTHY"
+                        consecutive_failures[region] = 0
+                        emit_state_change(region, "HEALTHY", reason)
+                    # Nếu vẫn fail khi đang UNHEALTHY → không làm gì (đã ghi rồi)
+
+            time.sleep(interval)
 
 
 if __name__ == "__main__":

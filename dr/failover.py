@@ -24,6 +24,7 @@ import json
 import pathlib
 import sys
 import time
+from datetime import datetime, timezone
 
 import httpx
 
@@ -35,13 +36,108 @@ LOG = pathlib.Path("reports/failover-events.jsonl")
 
 
 def emit(**kw):
-    """TODO: append 1 dòng JSONL có ts + iso vào LOG, và print ra stdout."""
-    raise NotImplementedError
+    """Append 1 dòng JSONL có ts (unix float) + iso vào LOG, và print ra stdout."""
+    now = datetime.now(timezone.utc)
+    row = {"ts": now.timestamp(), "iso": now.isoformat().replace("+00:00", "Z"), **kw}
+    print(json.dumps(row))
+    LOG.parent.mkdir(parents=True, exist_ok=True)
+    with open(LOG, "a") as f:
+        f.write(json.dumps(row) + "\n")
 
 
 def failover(target: str, backend: str, wait: float) -> dict:
-    """TODO: 5 bước ở trên, đúng thứ tự."""
-    raise NotImplementedError
+    """5 bước theo đúng thứ tự — không cutover trước khi target sẵn sàng."""
+
+    # ── Bước 1: verify_target ──────────────────────────────────────────────
+    try:
+        state_resp = httpx.get(f"{URL[target]}/v1/state", timeout=5.0)
+        target_state = state_resp.json()
+    except Exception as e:
+        target_state = {"error": str(e)}
+
+    emit(
+        step="1_verify_target",
+        region=target,
+        target_state=target_state,
+    )
+
+    # ── Bước 2: restore_snapshot ───────────────────────────────────────────
+    meta = snapshot.get(region=target, backend=backend)
+
+    primary = "a" if target == "b" else "b"
+    primary_db = pathlib.Path(f"state/region-{primary}/vectors.sqlite")
+    restored_db = pathlib.Path(f"state/region-{target}/vectors.sqlite")
+    rpo_info = snapshot.rpo(primary_db, restored_db)
+
+    emit(
+        step="2_restore_snapshot",
+        region=target,
+        embed_model_version=meta.get("embed_model_version"),
+        rpo_seconds=rpo_info.get("rpo_seconds"),
+        docs_lost=rpo_info.get("docs_lost"),
+    )
+
+    # ── Bước 3: scale_pool ────────────────────────────────────────────────
+    pool_state_path = pathlib.Path(f"state/region-{target}/pool_state")
+    pool_state_path.write_text("full")
+
+    emit(
+        step="3_scale_pool",
+        region=target,
+        pool_state="full",
+    )
+
+    # ── Bước 4: wait_ready ────────────────────────────────────────────────
+    deadline = time.time() + wait
+    ready = False
+    while time.time() < deadline:
+        try:
+            r = httpx.get(f"{URL[target]}/readyz", timeout=3.0)
+            if r.status_code == 200:
+                ready = True
+                break
+        except Exception:
+            pass
+        time.sleep(1.0)
+
+    emit(
+        step="4_wait_ready",
+        region=target,
+        ready=ready,
+    )
+
+    if not ready:
+        # ABORT — không cutover nếu target chưa ready (tránh double outage)
+        emit(
+            step="abort",
+            region=target,
+            reason="4_wait_ready timed out — KHÔNG cutover để tránh double outage",
+        )
+        return {
+            "ok": False,
+            "reason": "target not ready after wait",
+            "rpo_seconds": rpo_info.get("rpo_seconds"),
+            "docs_lost": rpo_info.get("docs_lost"),
+        }
+
+    # ── Bước 5: dns_cutover ───────────────────────────────────────────────
+    # Chỉ thực hiện SAU KHI bước 4 xác nhận target ready
+    active_region_path = pathlib.Path("edge/active_region")
+    active_region_path.write_text(target)
+
+    emit(
+        step="5_dns_cutover",
+        region=target,
+        active_region=target,
+    )
+
+    return {
+        "ok": True,
+        "active_region": target,
+        "embed_model_version": meta.get("embed_model_version"),
+        "rpo_seconds": rpo_info.get("rpo_seconds"),
+        "docs_lost": rpo_info.get("docs_lost"),
+    }
 
 
 if __name__ == "__main__":

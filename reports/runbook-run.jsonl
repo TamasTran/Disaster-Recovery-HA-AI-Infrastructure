@@ -1,0 +1,2 @@
+{"ts": 1787683132.302867, "iso": "2026-08-25T18:38:52.302867Z", "step": "1_xac_nhan_outage", "primary": "a", "primary_fail_count": 0, "primary_fail_threshold": 3, "primary_down": false, "target": "b", "target_ok": false, "target_reason": "Status 503"}
+{"ts": 1787683132.30714, "iso": "2026-08-25T18:38:52.307140Z", "step": "1_xac_nhan_outage_abort", "reason": "Region a ch\u1ec9 fail 0/3 l\u1ea7n \u2014 kh\u00f4ng ph\u1ea3i outage th\u1eadt"}
