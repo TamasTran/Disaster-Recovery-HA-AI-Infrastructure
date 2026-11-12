@@ -1,4 +1,4 @@
-# Day 23 — Disaster Recovery & High Availability for AI Infrastructure
+# Disaster-Recovery-HA-AI-Infrastructure-Lab
 
 **Lab format:** 2 hours · **Environment:** fully local, no cloud account required · **Core idea:** kill your own region first, then learn to survive it.
 
